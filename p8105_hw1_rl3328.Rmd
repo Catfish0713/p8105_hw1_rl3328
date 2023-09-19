@@ -79,3 +79,4 @@ as.numeric(pull(df,factor_vector))
 * It helps partly explain what happens when I try to take the mean.
   * mean() accepts numeric, When I call a function with an argument of the wrong type, R will try to coerce values to a different type so that the function will work. So, the logical variable is converted to numeric(TRUE-1,FALSE-0). That's why mean() works for logical variables.
   * But that doesn't explain why I cannot use mean() to calculate the mean of factor variables.factor variable is categorical variable(either ordinal or nominal), but as.numeric() treats factor variable as ordinal and apply numbers to it, which may be inappropriate.
+  
