@@ -1,0 +1,75 @@
+---
+title: "HW1"
+author: "Ruixi Li"
+date: "2023-09-19"
+output: html_document
+---
+
+Load the moderndive library
+```{r}
+library(moderndive)
+library(tidyverse)
+```
+
+load the early_january_weather dataset
+```{r}
+data("early_january_weather")
+```
+# Problem 1
+
+This problem focuses the use of inline R code, plotting, and the behavior of ggplot for variables of different types.
+
+## Short descriptive 
+
+1.The variables name of this dataset are:`colnames(early_january_weather)`.
+2.This data contains `nrow(early_january_weather)` entries and `ncol(early_january_weather)` columns.
+3.The mean temperature is `mean(early_january_weather$temp).#You can use na.rm = T, if there's missing value in temp column,but after viewing at the summary
+
+## Scatterplot
+we show a scatterplot of `temp` vs `time_hour`. 
+```{r scatterplot}
+scatter_plot <-  ggplot(early_january_weather, aes(x = time_hour, y = temp, color = humid)) + geom_point()
+ggsave("scatter_plot.pdf", height = 4, width = 6)
+```
+
+# Problem 2
+This problem is intended to emphasize variable types and introduce coercion; some awareness of how R treats numeric, character, and factor variables is necessary for working with these data types in practice.
+
+```{r df_create}
+factor_levels <- c("Red", "Blue", "Green")
+
+df <- tibble(
+  sample = rnorm(10),
+  logic = sample > 0,
+  char_vector = c("A","B","C","D","E","F","G","H","I","J"),
+  factor_vector = factor(sample(factor_levels, 10, replace = TRUE), levels = factor_levels) 
+)
+print(df)
+
+```
+Try to take the mean of each variable in your dataframe. 
+##  take the mean of each variable in df
+```{r mean eval = False}
+mean1 <- mean(pull(df,sample))
+mean2 <- mean(pull(df,logic))
+mean3 <- mean(pull(df,char_vector))
+mean4 <- mean(pull(df,factor_vector))
+```
+The mean for variable sample is `mean1`.
+The mean for variable sample is `mean2`.
+mean() function doesn't work on character variables or factor variables.
+
+## explicitly convert variables from one type to another
+```{r convert eval = False}
+num2 <- as.numeric(pull(df,logic))
+num3 <- as.numeric(pull(df,char_vector))
+num4 <- as.numeric(pull(df,factor_vector))
+mean4 <- mean(as.numeric(pull(df,factor_vector)))
+```
+The logical variable and factor variable can be explicitly coverted into numeric, but the character variable cannot.
+It helps partly explain what happens when I try to take the mean.
+mean() accepts numeric, When I call a function with an argument of the wrong type, R will try to coerce values to a different type so that the function will work. So, the logical variable is converted to numeric. That's why mean() works for logical variables.
+But that doedn't explain why I cannot use mean() to calculate the mean of factor variables.factor variable is categorical variable(either ordinal or nominal), but as.numeric() treats factor variable as ordinal and apply numbers to it, which may be inappropriate.
+
+
+"High", "Medium", "Low"
