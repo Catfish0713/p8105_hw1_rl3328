@@ -2,7 +2,7 @@
 title: "p8105_hw1_rl3328"
 author: "Ruixi Li"
 date: "2023-09-19"
-output: github_document
+output: html_document
 ---
 
 Load the moderndive library
